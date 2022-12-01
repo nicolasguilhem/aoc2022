@@ -14,24 +14,21 @@ public class AocDay01 extends GenericAocDay {
 	
 	@Override
 	public String run(Stream<?> datas) {
-		Long calloriesMax = 0L;
+		
+		int top3ElfCallories = toElfStream((Stream<String>) datas).sorted((e1, e2) -> Long.compare(e2.callories, e1.callories))
+				.limit(3)
+				.mapToInt(e -> e.callories.intValue())
+				.sum();
+		
+		return Long.toString(top3ElfCallories);
+	}
+
+	private Stream<Elf> toElfStream(Stream<String> datas) {
 		List<Elf> lstElf = new ArrayList<>();
 		lstElf.add(new Elf(0L));
-		((Stream<String>) datas).forEach(s -> buildElf(s, lstElf));
-		
-		for (Elf elf : lstElf) {
-			if (elf.callories > calloriesMax) {
-				calloriesMax = elf.callories;
-			}
-		}
-		
-		lstElf.sort((e1, e2) -> Long.compare(e2.callories, e1.callories));
-		
-		calloriesMax = lstElf.get(0).callories + lstElf.get(1).callories +lstElf.get(2).callories; 
-		
-		return Long.toString(calloriesMax);
+		datas.forEach(s -> buildElf(s, lstElf));
+		return lstElf.stream();
 	}
-	
 
 	private void buildElf(String s, List<Elf> lstElf) {
 		if (s.equals("")) {
@@ -41,4 +38,5 @@ public class AocDay01 extends GenericAocDay {
 			lstElf.get(lstElf.size() - 1).callories = lstElf.get(lstElf.size() - 1).callories + Long.parseLong(s);
 		}
 	}
+	
 }
