@@ -14,11 +14,11 @@ public class AocDay {
 	private final DataWithExpectedResult testDatas;
 	private final DataWithExpectedResult finalDatas;
 
-	public AocDay(int dayNumber, String expectedTestResult, String expectedFinalResult) {
+	public AocDay(int dayNumber, String expectedTestResultP1, String expectedFinalResultP1, String expectedTestResultP2, String expectedFinalResultP2) {
 		super();
 		this.dayNumber = dayNumber;
-		this.testDatas = new DataWithExpectedResult(DatasFileType.TEST, expectedTestResult);
-		this.finalDatas = new DataWithExpectedResult(DatasFileType.FINAL, expectedFinalResult);
+		this.testDatas = new DataWithExpectedResult(DatasFileType.TEST, expectedTestResultP1, expectedTestResultP2);
+		this.finalDatas = new DataWithExpectedResult(DatasFileType.FINAL, expectedFinalResultP1, expectedFinalResultP2);
 	}
 
 	public Stream<String> getDatas(DatasFileType datasType) throws URISyntaxException, ResourceNotFoundException, ReadingFileException {
@@ -29,8 +29,8 @@ public class AocDay {
 		return FileReaderUtils.readFileAsStreamObj(this.getDatasToUse(datasType).getFilePath(dayNumber), mapper);
 	}
 
-	public String getExpectedResult(DatasFileType datasType) {
-		return this.getDatasToUse(datasType).getExpectedResult();
+	public String getExpectedResult(DatasFileType datasType, PartOfDay partOfDay) {
+		return this.getDatasToUse(datasType).getExpectedResult(partOfDay);
 	}
 	
 	private DataWithExpectedResult getDatasToUse(DatasFileType datasType) {

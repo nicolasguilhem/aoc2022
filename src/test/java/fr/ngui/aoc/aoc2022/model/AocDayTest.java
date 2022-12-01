@@ -15,7 +15,7 @@ class AocDayTest {
 	@Test
 	void test_getDatas() throws URISyntaxException, ResourceNotFoundException, ReadingFileException {
 
-		AocDay aocDay = new AocDay(2, "32", "121");
+		AocDay aocDay = new AocDay(2, "32", "121", "32", "121");
 		Stream<String> result = aocDay.getDatas(DatasFileType.TEST);
 		assertThat(result).isNotNull().hasSize(3);
 	}
@@ -23,7 +23,7 @@ class AocDayTest {
 	@Test
 	void test_getDatasAsObject() throws URISyntaxException, ResourceNotFoundException, ReadingFileException {
 
-		AocDay aocDay = new AocDay(2, "32", "121");
+		AocDay aocDay = new AocDay(2, "32", "121", "32", "121");
 		Stream<Long> result = aocDay.getDatasAsObject(DatasFileType.FINAL, Long::parseLong);
 		assertThat(result).isNotNull().hasSize(5);
 	}
@@ -31,8 +31,8 @@ class AocDayTest {
 	@Test
 	void test_getExpectedResult() throws URISyntaxException, ResourceNotFoundException, ReadingFileException {
 
-		AocDay aocDay = new AocDay(2, "32", "121");
-		String result = aocDay.getExpectedResult(DatasFileType.FINAL);
+		AocDay aocDay = new AocDay(2, "32", "121", "32", "121");
+		String result = aocDay.getExpectedResult(DatasFileType.FINAL, PartOfDay.ONE);
 		assertThat(result).isEqualTo("121");
 	}
 }
