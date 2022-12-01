@@ -36,7 +36,7 @@ public abstract class GenericAocDay {
 		long start = System.nanoTime();
 		String result = this.run(partOfDay, this.getAocDay().getDatas(dataType));
 		long time = System.nanoTime() - start;
-		log.info("    result is {} calculated in {} ms", result, time / 1000000);
+		log.info("    result is \033[1m{}\033[0m calculated in \033[1m{}\033[0m ms", result, time / 1000000);
 		return result;
 	}
 
@@ -76,7 +76,7 @@ public abstract class GenericAocDay {
 						log.info("<<< Getting result for part {}-{}, expecting {}", partOfDay, type, expectedResult);
 						String result = instance.getResult(partOfDay, type);
 						assertThat(result).isEqualTo(expectedResult);
-						log.info(">>> Result is the one expected !!!");
+						log.info(">>> \u001B[32m\033[1mResult is the one expected\033[0m !!!");
 					}
 				}
 			}
