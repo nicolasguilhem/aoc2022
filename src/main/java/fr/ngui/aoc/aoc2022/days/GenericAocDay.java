@@ -29,7 +29,11 @@ public abstract class GenericAocDay {
 	public abstract String run(Stream<?> datas);
 	
 	public String getResult(DatasFileType dataType) throws URISyntaxException, ResourceNotFoundException, ReadingFileException {
-		return this.run(this.getAocDay().getDatas(dataType));
+		long start = System.nanoTime();
+		String result = this.run(this.getAocDay().getDatas(dataType));
+		long time = System.nanoTime() - start;
+    	log.info("    result is {} calculated in {} ms", result, time / 1000000);
+		return result;
 	}
 
     private static String getAocDayClassFullyQualifiedName(int day) {
@@ -48,9 +52,8 @@ public abstract class GenericAocDay {
 
             for (DatasFileType type  : DatasFileType.values()) {
             	log.info("<<< Getting result for {}, expecting {}", type, instance.getAocDay().getExpectedResult(type));
-            	String testResults = instance.getResult(type);
-            	log.info("    result is {}", testResults);
-                assertThat(testResults).isEqualTo(instance.getAocDay().getExpectedResult(type));
+            	String result = instance.getResult(type);
+                assertThat(result).isEqualTo(instance.getAocDay().getExpectedResult(type));
             	log.info(">>> Result is the one expected !!!");
             }
         } catch (Exception e) {
