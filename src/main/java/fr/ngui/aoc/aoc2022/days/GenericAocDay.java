@@ -47,27 +47,8 @@ public abstract class GenericAocDay {
 	public static void main(String[] args) {
 		try {
 			int day = Integer.parseInt(args[0]);
-			String expectedTestResultP1 = null;
-			String expectedFinalResultP1 = null;
-			String expectedTestResultP2 = null;
-			String expectedFinalResultP2 = null;
-			if (args.length > 1) {
-				expectedTestResultP1 = args[1];
-				if (args.length > 2) {
-					expectedFinalResultP1 = args[2];
-					if (args.length > 3) {
-						expectedTestResultP2 = args[3];
-						if (args.length > 4) {
-							expectedFinalResultP2 = args[4];
-						}
-					}
-				}
-			}
 			log.info("Starting Advent of code for day {}", day);
-			Class<GenericAocDay> clazz = (Class<GenericAocDay>) Class
-					.forName(GenericAocDay.getAocDayClassFullyQualifiedName(day));
-			GenericAocDay instance = clazz.getDeclaredConstructor(int.class, String.class, String.class, String.class, String.class).newInstance(
-					day, expectedTestResultP1, expectedFinalResultP1, expectedTestResultP2, expectedFinalResultP2);
+			GenericAocDay instance = getInstance(args);
 
 			for (PartOfDay partOfDay : PartOfDay.values()) {
 				for (DatasFileType type : DatasFileType.values()) {
@@ -84,6 +65,32 @@ public abstract class GenericAocDay {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private static GenericAocDay getInstance(String[] args) throws ReflectiveOperationException {
+
+		int day = Integer.parseInt(args[0]);
+		String expectedTestResultP1 = null;
+		String expectedFinalResultP1 = null;
+		String expectedTestResultP2 = null;
+		String expectedFinalResultP2 = null;
+		if (args.length > 1) {
+			expectedTestResultP1 = args[1];
+			if (args.length > 2) {
+				expectedFinalResultP1 = args[2];
+				if (args.length > 3) {
+					expectedTestResultP2 = args[3];
+					if (args.length > 4) {
+						expectedFinalResultP2 = args[4];
+					}
+				}
+			}
+		}
+		log.info("Starting Advent of code for day {}", day);
+		Class<GenericAocDay> clazz = (Class<GenericAocDay>) Class
+				.forName(GenericAocDay.getAocDayClassFullyQualifiedName(day));
+		return clazz.getDeclaredConstructor(int.class, String.class, String.class, String.class, String.class).newInstance(
+				day, expectedTestResultP1, expectedFinalResultP1, expectedTestResultP2, expectedFinalResultP2);
 	}
 
 }
