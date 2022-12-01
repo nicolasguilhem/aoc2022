@@ -33,10 +33,8 @@ public class AocDay01 extends GenericAocDay {
 	private void buildElf(String s, List<Elf> lstElf) {
 		if (s.equals("")) {
 			lstElf.add(new Elf(0L));
-			return;
 		} else {
 			lstElf.get(lstElf.size() - 1).callories = lstElf.get(lstElf.size() - 1).callories + Long.parseLong(s);
 		}
 	}
-	
 }
