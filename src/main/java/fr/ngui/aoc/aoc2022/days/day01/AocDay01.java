@@ -25,6 +25,10 @@ public class AocDay01 extends GenericAocDay {
 			}
 		}
 		
+		lstElf.sort((e1, e2) -> Long.compare(e2.callories, e1.callories));
+		
+		calloriesMax = lstElf.get(0).callories + lstElf.get(1).callories +lstElf.get(2).callories; 
+		
 		return Long.toString(calloriesMax);
 	}
 	
