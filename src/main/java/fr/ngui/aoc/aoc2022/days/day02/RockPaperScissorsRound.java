@@ -16,7 +16,7 @@ public class RockPaperScissorsRound {
 	}
 
 	public RockPaperScissorsRound(String fileLine) {
-		this(ChoiceEnum.fromOpponentChoice(fileLine.split(" ")[0]), ChoiceEnum.fromOwnChoice(fileLine.split(" ")[1]), RoundResult.fromString(fileLine.split(" ")[1]));
+		this(ChoiceEnum.fromOpponentChoice(fileLine.split(" ")[0]), ChoiceEnum.fromOwnChoice(fileLine.split(" ")[1]), RoundResult.fromCode(fileLine.split(" ")[1]));
 	}
 
 	private RoundResult getResult() {
