@@ -46,8 +46,7 @@ public abstract class GenericAocDay {
 
 	public static void main(String[] args) {
 		try {
-			int day = Integer.parseInt(args[0]);
-			log.info("Starting Advent of code for day {}", day);
+			log.info("Starting Advent of code for day {}", args[0]);
 			GenericAocDay instance = getInstance(args);
 
 			for (PartOfDay partOfDay : PartOfDay.values()) {
@@ -86,7 +85,7 @@ public abstract class GenericAocDay {
 				}
 			}
 		}
-		log.info("Starting Advent of code for day {}", day);
+
 		Class<GenericAocDay> clazz = (Class<GenericAocDay>) Class
 				.forName(GenericAocDay.getAocDayClassFullyQualifiedName(day));
 		return clazz.getDeclaredConstructor(int.class, String.class, String.class, String.class, String.class).newInstance(
