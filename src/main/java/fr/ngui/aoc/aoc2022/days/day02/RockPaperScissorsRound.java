@@ -1,66 +1,46 @@
 package fr.ngui.aoc.aoc2022.days.day02;
 
+import java.util.Arrays;
+
 import fr.ngui.aoc.aoc2022.model.PartOfDay;
 
 public class RockPaperScissorsRound {
 
 	private final ChoiceEnum opponentChoice;
 	private final ChoiceEnum ownChoice;
-	private final RoundResult expectedResult;
+	private final ResultEnum result;
 
-	public RockPaperScissorsRound(ChoiceEnum opponentChoice, ChoiceEnum ownChoice, RoundResult expectedResult) {
+	public RockPaperScissorsRound(ChoiceEnum opponentChoice, Object choiceOrResult) {
 		super();
 		this.opponentChoice = opponentChoice;
-		this.ownChoice = ownChoice;
-		this.expectedResult = expectedResult;
-	}
-
-	public RockPaperScissorsRound(String fileLine) {
-		this(ChoiceEnum.fromOpponentChoice(fileLine.split(" ")[0]), ChoiceEnum.fromOwnChoice(fileLine.split(" ")[1]), RoundResult.fromCode(fileLine.split(" ")[1]));
-	}
-
-	private RoundResult getResult() {
-		return RoundResult.fromRound(opponentChoice, ownChoice);
-	}
-	
-	public int getOwnScore(PartOfDay partOfDay) {
-		if (partOfDay.equals(PartOfDay.ONE)) {
-			return ownChoice.getScore() + getResult().getScore();
+		if (choiceOrResult instanceof ChoiceEnum choice) {
+			this.ownChoice = choice;
+			this.result = getResultFromChoices();
+		} else if(choiceOrResult instanceof ResultEnum expectedResult) {
+			this.result = expectedResult;
+			this.ownChoice = getChoiceFromResult();
 		} else {
-			return getChoiceForExpectedResult().getScore() + expectedResult.getScore();
+			throw new IllegalArgumentException();
 		}
 	}
+
+	public RockPaperScissorsRound(String fileLine, PartOfDay partOfDay) {
+		this(ChoiceEnum.fromOpponentChoice(fileLine.split(" ")[0]),
+				partOfDay.equals(PartOfDay.ONE) ? ChoiceEnum.fromOwnChoice(fileLine.split(" ")[1]) : ResultEnum.fromCode(fileLine.split(" ")[1]));
+	}
+
+	private ResultEnum getResultFromChoices() {
+		return ResultEnum.fromRound(opponentChoice, ownChoice);
+	}
 	
-	private ChoiceEnum getChoiceForExpectedResult() {
-
-		if (expectedResult.equals(RoundResult.DRAW)) {
-			return opponentChoice;
-		}
-		
-		if (expectedResult.equals(RoundResult.LOSS) && opponentChoice.equals(ChoiceEnum.ROCK)) {
-			return ChoiceEnum.SCISSOR;
-		}
-
-		if (expectedResult.equals(RoundResult.LOSS) && opponentChoice.equals(ChoiceEnum.SCISSOR)) {
-			return ChoiceEnum.PAPER;
-		}
-
-		if (expectedResult.equals(RoundResult.LOSS) && opponentChoice.equals(ChoiceEnum.PAPER)) {
-			return ChoiceEnum.ROCK;
-		}
-
-		if (expectedResult.equals(RoundResult.WIN) && opponentChoice.equals(ChoiceEnum.ROCK)) {
-			return ChoiceEnum.PAPER;
-		}
-
-		if (expectedResult.equals(RoundResult.WIN) && opponentChoice.equals(ChoiceEnum.SCISSOR)) {
-			return ChoiceEnum.ROCK;
-		}
-
-		if (expectedResult.equals(RoundResult.WIN) && opponentChoice.equals(ChoiceEnum.PAPER)) {
-			return ChoiceEnum.SCISSOR;
-		}
-		
-		return ChoiceEnum.ROCK;
+	public int getTotalScore() {
+		return ownChoice.getScore() + this.result.getScore();
+	}
+	
+	private ChoiceEnum getChoiceFromResult() {
+		return Arrays.stream(ChoiceEnum.values())
+			.filter(choice -> ChoiceEnum.comparing().compare(opponentChoice, choice) == result.getOrderValue())
+			.findFirst()
+			.orElseThrow();
 	}
 }

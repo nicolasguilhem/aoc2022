@@ -3,7 +3,6 @@ package fr.ngui.aoc.aoc2022.days.day02;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import fr.ngui.aoc.aoc2022.days.GenericAocDay;
 import fr.ngui.aoc.aoc2022.days.GenericAocDayWithMapper;
 import fr.ngui.aoc.aoc2022.model.PartOfDay;
 
@@ -15,12 +14,12 @@ public class AocDay02 extends GenericAocDayWithMapper<RockPaperScissorsRound> {
 	
 	@Override
 	public String run(PartOfDay partOfDay, Stream<?> datas) {
-		int result = ((Stream<RockPaperScissorsRound>) datas).mapToInt(round -> round.getOwnScore(partOfDay)).sum();
+		int result = ((Stream<RockPaperScissorsRound>) datas).mapToInt(RockPaperScissorsRound::getTotalScore).sum();
 		return Integer.toString(result);
 	}
 
 	@Override
-	public Function<String, RockPaperScissorsRound> getMapper() {
-		return RockPaperScissorsRound::new;
+	public Function<String, RockPaperScissorsRound> getMapper(PartOfDay partOfDay) {
+		return line -> new RockPaperScissorsRound(line, partOfDay);
 	}
 }
