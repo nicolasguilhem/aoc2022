@@ -16,7 +16,7 @@ import fr.ngui.aoc.aoc2022.model.PartOfDay;
 
 public abstract class GenericAocDay {
 
-	private static final Logger log = LoggerFactory.getLogger(GenericAocDay.class);
+	protected static final Logger log = LoggerFactory.getLogger(GenericAocDay.class);
 	private final AocDay aocDay;
 
 	protected GenericAocDay(int day, String expectedTestResultP1, String expectedFinalResultP1,

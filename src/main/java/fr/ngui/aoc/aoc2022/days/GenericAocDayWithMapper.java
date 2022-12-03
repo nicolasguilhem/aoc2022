@@ -13,7 +13,7 @@ import fr.ngui.aoc.aoc2022.model.PartOfDay;
 
 public abstract class GenericAocDayWithMapper<T> extends GenericAocDay {
 
-	private static final Logger log = LoggerFactory.getLogger(GenericAocDayWithMapper.class);
+	protected static final Logger log = LoggerFactory.getLogger(GenericAocDayWithMapper.class);
 	
 	protected GenericAocDayWithMapper(int day, String expectedTestResultP1, String expectedFinalResultP1, String expectedTestResultP2, String expectedFinalResultP2) {
 		super(day, expectedTestResultP1, expectedFinalResultP1, expectedTestResultP2, expectedFinalResultP2);
