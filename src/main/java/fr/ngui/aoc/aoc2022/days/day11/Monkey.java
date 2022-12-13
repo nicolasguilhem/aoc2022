@@ -1,21 +1,22 @@
 package fr.ngui.aoc.aoc2022.days.day11;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.LongUnaryOperator;
 
-import fr.ngui.aoc.aoc2022.model.PartOfDay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Monkey {
+	protected static final Logger log = LoggerFactory.getLogger(Monkey.class);
 
-	private final List<BigInteger> items = new ArrayList<>();
+	private final List<Long> items = new ArrayList<>();
 	private Operation operation;
-	private int inspectedItems = 0;
+	private long inspectedItems = 0;
 	private Test test;
 
-	public List<BigInteger> getItems() {
+	public List<Long> getItems() {
 		return items;
 	}
 
@@ -27,7 +28,7 @@ public class Monkey {
 		this.operation = new Operation(operation);
 	}
 
-	public int getInspectedItems() {
+	public Long getInspectedItems() {
 		return inspectedItems;
 	}
 
@@ -39,33 +40,21 @@ public class Monkey {
 		this.test = test;
 	}
 
-	public void addItem(BigInteger item) {
+	public void addItem(Long item) {
 		this.items.add(item);
 	}
 
-	public void inspectItems(List<Monkey> lstMonkey, PartOfDay partOfDay) {
+	public static Comparator<Monkey> compareByInspectedItems = (m1, m2) -> m2.getInspectedItems()
+			.compareTo(m1.getInspectedItems());
+
+	public void inspectItems(List<Monkey> lstMonkey, LongUnaryOperator afterInspection) {
 		for (int iItem = 0; iItem < this.getItems().size(); iItem++) {
 			inspectedItems++;
 
-			final BigInteger newValue = this.operation.doOperation(this.getItems().get(iItem))
-					.divide(BigInteger.valueOf(PartOfDay.ONE.equals(partOfDay) ? 3L : 1L));
-
-			lstMonkey.get(this.test.getMonkeyToThrow(newValue)).getItems().add(newValue);
+			final Long newValue = this.operation.doOperation(this.getItems().get(iItem), afterInspection);
+			lstMonkey.get(this.test.getMonkeyToThrow(newValue)).addItem(newValue);
 		}
 
 		this.getItems().clear();
-	}
-
-	public String getListItemsAsString() {
-		return items.stream().map(intValue -> intValue.toString()).collect(Collectors.joining(", "));
-	}
-
-	public static Comparator<Monkey> compareByInspectedItems = (m1, m2) -> {
-		return m2.getInspectedItems() - m1.getInspectedItems();
-	};
-
-	@Override
-	public String toString() {
-		return String.format("Items : %s\n%s\n%s", getListItemsAsString(), operation.toString(), test.toString());
 	}
 }
